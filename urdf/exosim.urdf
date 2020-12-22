@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot name="oslsim">
+<robot name="exosim">
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/oslsim</robotNamespace>
+      <robotNamespace>/exosim</robotNamespace>
     </plugin>
   </gazebo>
 
   <gazebo>
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-        <robotNamespace>/oslsim</robotNamespace>
+        <robotNamespace>/exosim</robotNamespace>
         <alwaysOn>true</alwaysOn>
         <updateRate>50.0</updateRate>
         <bodyName>body</bodyName>
@@ -125,7 +125,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/thighL.STL" />
+          filename="package://exosim/meshes/thighL.STL" />
       </geometry>
       <material
         name="">
@@ -154,7 +154,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/thighL</topicName>
           <bodyName>thighL</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -189,7 +189,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/thighR.STL" />
+          filename="package://exosim/meshes/thighR.STL" />
       </geometry>
       <material
         name="">
@@ -218,7 +218,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/thighR</topicName>
           <bodyName>thighR</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -293,7 +293,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/pylonRCollider.STL" />
+          filename="package://exosim/meshes/pylonRCollider.STL" />
       </geometry>
       <material
         name="">
@@ -322,7 +322,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/pylonR</topicName>
           <bodyName>pylonR</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -382,7 +382,7 @@
         rpy="0.175 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/footR.STL" />
+          filename="package://exosim/meshes/footR.STL" />
       </geometry>
       <material
         name="">
@@ -431,7 +431,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/footR</topicName>
           <bodyName>footR</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -492,7 +492,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/pylonLCollider.STL" />
+          filename="package://exosim/meshes/pylonLCollider.STL" />
       </geometry>
       <material
         name="">
@@ -521,7 +521,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/pylonL</topicName>
           <bodyName>pylonL</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -582,7 +582,7 @@
         rpy="-0.175 0 0" />
       <geometry>
         <mesh
-          filename="package://oslsim/meshes/footL.STL" />
+          filename="package://exosim/meshes/footL.STL" />
       </geometry>
       <material
         name="">
@@ -631,7 +631,7 @@
         <visualize>true</visualize>
         <topic>__default_topic__</topic>
         <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <topicName>imu/footL</topicName>
           <bodyName>footL</bodyName>
           <updateRateHZ>50.0</updateRateHZ>
@@ -706,7 +706,7 @@
           <collision>footL_loadcell_link_collision_1</collision>
         </contact>
         <plugin name="footL_bumper_plugin" filename="libgazebo_ros_bumper.so">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <bumperTopicName>footL/loadcell</bumperTopicName>
           <frameName>footL_loadcell_link</frameName>
         </plugin>
@@ -748,7 +748,7 @@
           <collision>footR_loadcell_link_collision_1</collision>
         </contact>
         <plugin name="footR_bumper_plugin" filename="libgazebo_ros_bumper.so">
-          <robotNamespace>/oslsim</robotNamespace>
+          <robotNamespace>/exosim</robotNamespace>
           <bumperTopicName>footR/loadcell</bumperTopicName>
           <frameName>footR_loadcell_link</frameName>
         </plugin>

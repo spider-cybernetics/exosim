@@ -37,14 +37,14 @@ class JointCmds:
 
 def publish_commands(joints, hz):
     pub={}
-    ns_str = '/oslsim/'
+    ns_str = '/exosim/'
     cont_str = '_position_controller'
     rospack=rospkg.RosPack()
-    cwd=rospack.get_path('oslsim')
+    cwd=rospack.get_path('exosim')
     for j in joints:
         pub[j] = rospy.Publisher(ns_str + j + cont_str + '/command', Float64, queue_size=10 )
 
-    rospy.init_node('oslsim_walker', anonymous=True)
+    rospy.init_node('exosim_walker', anonymous=True)
     rate = rospy.Rate(hz)
     jntcmds = JointCmds(joints=joints,path=cwd)
     while not rospy.is_shutdown():

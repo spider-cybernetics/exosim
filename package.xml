@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package>
-  <name>oslsim</name>
+  <name>exosim</name>
   <version>1.0.0</version>
   <description>
-    <p>URDF Description package for oslsim</p>
+    <p>URDF Description package for exosim</p>
     <p>This package contains configuration data, 3D models and launch files
 for OSL</p>
   </description>
