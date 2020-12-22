@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="oslsim">
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/oslsim</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+        <robotNamespace>/oslsim</robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>50.0</updateRate>
+        <bodyName>body</bodyName>
+        <topicName>odom</topicName>
+        <gaussianNoise>0.01</gaussianNoise>
+        <frameName>world</frameName>
+        <xyzOffsets>0 0 0</xyzOffsets>
+        <rpyOffsets>0 0 0</rpyOffsets>
+      </plugin>
+  </gazebo>
+
+  <link name="world"/>
+
+  <link name="slider">
+    <inertial>
+          <origin rpy="0.0 0 0" xyz="0 0 0"/>
+          <mass value="0.001" />
+          <inertia ixx="1.0e-07" ixy="0.0" ixz="0.0" iyy="1.0e-07" iyz="0.0" izz="1.0e-07"/>
+      </inertial>
+      <collision>
+          <origin rpy="0.0 0 0" xyz="0 0 0"/>
+          <geometry>
+              <box size="0.25 0.25 0.01"/>
+          </geometry>
+      </collision>
+  </link>
+
+  <gazebo reference="slider">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <material>Gazebo/Red</material>
+  </gazebo>
+
+  <joint name="slider_joint" type="prismatic">
+      <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+      <parent link="world" />
+      <child link="slider" />
+      <axis xyz="1 0 0" />
+      <limit effort="100" lower="-10.0" upper="100.0" velocity="10" />
+      <dynamics damping="0.2" friction="0.15"/>
+  </joint>
+
+  <link name="entity">
+      <inertial>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="4.16666666667e-05" ixy="0.0" ixz="0.0" iyy="4.16666666667e-05" iyz="0.0" izz="4.16666666667e-05"/>
+        </inertial>
+  </link>
+
+  <gazebo reference="entity">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="entity_joint" type="fixed">
+      <parent link="slider"/>
+      <child link="entity"/>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="root_joint" type="fixed">
+    <parent link="entity"/>
+    <child link="body"/>
+  </joint>  
+
+  <link name="body">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.1" />
+      <inertia
+        ixx="0.01"
+        ixy="0"
+        ixz="0"
+        iyy="0.01"
+        iyz="0"
+        izz="0.01" />
+    </inertial>
+  </link>
+  
+  <gazebo reference="body">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+  </gazebo>
+
+  <link name="thighL">
+    <inertial>
+      <origin
+        xyz="0.0079 0.105 -0.18514"
+        rpy="1.5708 0 0" />
+      <mass
+        value="5.5797" />
+      <inertia
+        ixx="0.0451"
+        ixy="-0.0023863"
+        ixz="0.00041503"
+        iyy="0.017843"
+        iyz="-0.00079008"
+        izz="0.046937" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/thighL.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.0079 0.105 -0.18514"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <box size="0.15 0.3 0.15"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="thighL">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <sensor name="thighL_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/thighL</topicName>
+          <bodyName>thighL</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>thighL</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>
+  </gazebo>
+
+  <link name="thighR">
+    <inertial>
+      <origin
+        xyz="0.0149 -0.105 -0.18907"
+        rpy="1.5708 0 0" />
+      <mass
+        value="5.5993" />
+      <inertia
+        ixx="0.045555"
+        ixy="-0.0028683"
+        ixz="-0.00027507"
+        iyy="0.018107"
+        iyz="0.0020012"
+        izz="0.04735" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/thighR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.0149 -0.105 -0.18907"
+        rpy="1.5708 0 0" />
+      <geometry>
+        <box size="0.15 0.3 0.15"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="thighR">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <sensor name="thighR_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/thighR</topicName>
+          <bodyName>thighR</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>thighR</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>      
+  </gazebo>
+
+  <joint name="hipR" type="revolute">
+    <parent link="body"/>
+    <child link="thighR"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping="0.1" friction="0.1"/>
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />
+  </joint>
+
+  <transmission name="hipR_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="hipR">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="hipR_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <joint name="hipL" type="revolute">
+    <parent link="body"/>
+    <child link="thighL"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+    <dynamics damping="0.1" friction="0.1"/>
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />
+  </joint>
+
+  <transmission name="hipL_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="hipL">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="hipL_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <link name="pylonR">
+    <inertial>
+      <origin
+        xyz="0.00071137 -0.14671 0.059447"
+        rpy="0 0 0" />
+      <mass
+        value="0.9365" />
+      <inertia
+        ixx="0.00092446"
+        ixy="-1.5017E-05"
+        ixz="2.9586E-06"
+        iyy="0.00064852"
+        iyz="-1.2701E-05"
+        izz="0.0013496" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/pylonRCollider.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.00071137 -0.14671 0.059447"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.35 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="pylonR">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <sensor name="pylonR_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/pylonR</topicName>
+          <bodyName>pylonR</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>pylonR</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>      
+  </gazebo>
+
+  <joint name="kneeR" type="revolute">
+    <origin
+      xyz="-0.0073766 -0.062441 -0.4427"
+      rpy="1.5708 0 0" />
+    <parent
+      link="thighR" />
+    <child
+      link="pylonR" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.1" friction="0.1"/>
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />
+  </joint>
+
+  <transmission name="kneeR_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="kneeR">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="kneeR_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <link name="footR">
+    <inertial>
+      <origin
+        xyz="0.029606 0.056108 0.013102"
+        rpy="0 0 0" />
+      <mass
+        value="0.79826" />
+      <inertia
+        ixx="0.00051564"
+        ixy="-2.531E-06"
+        ixz="-1.6019E-06"
+        iyy="0.0004945"
+        iyz="-0.0001344"
+        izz="0.0001125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0.175 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/footR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.029606 0.065 0.05"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.0675 0.025 0.2"/>
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>1.0</mu>
+            <mu2>1.0</mu2>
+            <fdir1>1 0 0</fdir1>
+            <slip1>0</slip1>
+            <slip2>0</slip2>
+          </ode>
+          <torsional>
+            <coefficient>0.0</coefficient>
+            <patch_radius>0</patch_radius>
+            <surface_radius>0</surface_radius>
+            <use_patch_radius>1</use_patch_radius>
+            <ode>
+              <slip>0</slip>
+            </ode>
+          </torsional>
+        </friction>    
+      </surface>
+    </collision>
+  </link>
+
+  <gazebo reference="footR">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <sensor name="footR_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/footR</topicName>
+          <bodyName>footR</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>footR</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>      
+  </gazebo>
+
+  <joint name="ankleR"
+    type="revolute">
+    <origin
+      xyz="-0.00077967 -0.3134 0.026811"
+      rpy="-3.1416 -1.5708 0" />
+    <parent
+      link="pylonR" />
+    <child
+      link="footR" />
+    <axis
+      xyz="1 0 0" />
+    <dynamics damping="0.1" friction="0.1"/>
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />      
+  </joint>
+
+  <transmission name="ankleR_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ankleR">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ankleR_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <link name="pylonL">
+    <inertial>
+      <origin
+        xyz="0.00071104 -0.14671 -0.059447"
+        rpy="0 0 0" />
+      <mass
+        value="0.93649" />
+      <inertia
+        ixx="0.00092445"
+        ixy="-1.5017E-05"
+        ixz="-2.9597E-06"
+        iyy="0.00064852"
+        iyz="1.2705E-05"
+        izz="0.0013496" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/pylonLCollider.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.00071104 -0.14671 -0.059447"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.35 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="pylonL">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <sensor name="pylonL_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/pylonL</topicName>
+          <bodyName>pylonL</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>pylonL</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>      
+  </gazebo>
+
+  <joint name="kneeL"
+    type="revolute">
+    <origin
+      xyz="-0.0073766 0.057865 -0.4427"
+      rpy="1.5708 0 0" />
+    <parent
+      link="thighL" />
+    <child
+      link="pylonL" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics damping="0.1" friction="0.1"/>
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />      
+  </joint>
+
+  <transmission name="kneeL_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="kneeL">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="kneeL_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <link name="footL">
+    <inertial>
+      <origin
+        xyz="0.029606 -0.056108 0.013102"
+        rpy="0 0 0" />
+      <mass
+        value="0.79826" />
+      <inertia
+        ixx="0.00051563"
+        ixy="2.5317E-06"
+        ixz="-1.6036E-06"
+        iyy="0.00049449"
+        iyz="0.0001344"
+        izz="0.0001125" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="-0.175 0 0" />
+      <geometry>
+        <mesh
+          filename="package://oslsim/meshes/footL.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.029606 -0.065 0.05"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.0675 0.025 0.2"/>
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>1.0</mu>
+            <mu2>1.0</mu2>
+            <fdir1>1 0 0</fdir1>
+            <slip1>0</slip1>
+            <slip2>0</slip2>
+          </ode>
+          <torsional>
+            <coefficient>0.0</coefficient>
+            <patch_radius>0</patch_radius>
+            <surface_radius>0</surface_radius>
+            <use_patch_radius>1</use_patch_radius>
+            <ode>
+              <slip>0</slip>
+            </ode>
+          </torsional>
+        </friction>  
+      </surface>
+    </collision>
+  </link>
+
+  <gazebo reference="footL">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <sensor name="footL_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <robotNamespace>/oslsim</robotNamespace>
+          <topicName>imu/footL</topicName>
+          <bodyName>footL</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>footL</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>      
+  </gazebo>
+
+  <joint name="ankleL"
+    type="revolute">
+    <origin
+      xyz="-0.00077967 -0.3134 -0.026811"
+      rpy="0 1.5708 0" />
+    <parent
+      link="pylonL" />
+    <child
+      link="footL" />
+    <axis
+      xyz="1 0 0" />
+    <dynamics damping="0.1" friction="0.1"/>      
+    <limit effort="1.0" velocity="100" lower="-1.57" upper="1.57" />      
+  </joint>
+
+  <transmission name="ankleL_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="ankleL">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="ankleL_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <link name="footL_loadcell_link">
+    <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <mass value="0.0001" />
+          <inertia ixx="1.6e-08" ixy="0.0" ixz="0.0" iyy="1.6e-08" iyz="0.0" izz="1.6e-08"/>
+      </inertial>
+      <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+              <sphere radius="0.020"/>
+          </geometry>
+      </collision>
+</link>
+
+  <gazebo reference="footL_loadcell_link">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+  </gazebo>
+
+  <joint name="footL_loadcell_link_joint" type="fixed">
+      <parent link="footL"/>
+      <child link="footL_loadcell_link"/>
+      <origin xyz="0.03 -0.06 0" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="footL_loadcell_link">
+      <sensor name="footL_loadcell_sensor" type="contact">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <contact>
+          <collision>footL_loadcell_link_collision_1</collision>
+        </contact>
+        <plugin name="footL_bumper_plugin" filename="libgazebo_ros_bumper.so">
+          <robotNamespace>/oslsim</robotNamespace>
+          <bumperTopicName>footL/loadcell</bumperTopicName>
+          <frameName>footL_loadcell_link</frameName>
+        </plugin>
+      </sensor>
+  </gazebo>
+
+  <link name="footR_loadcell_link">
+    <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <mass value="0.0001" />
+          <inertia ixx="1.6e-08" ixy="0.0" ixz="0.0" iyy="1.6e-08" iyz="0.0" izz="1.6e-08"/>
+      </inertial>
+      <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+              <sphere radius="0.020"/>
+          </geometry>
+      </collision>
+</link>
+
+  <gazebo reference="footR_loadcell_link">
+      <kp>1000.0</kp>
+      <kd>1000.0</kd>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+  </gazebo>
+
+  <joint name="footR_loadcell_link_joint" type="fixed">
+      <parent link="footR"/>
+      <child link="footR_loadcell_link"/>
+      <origin xyz="0.03 0.06 0" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="footR_loadcell_link">
+      <sensor name="footR_loadcell_sensor" type="contact">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <contact>
+          <collision>footR_loadcell_link_collision_1</collision>
+        </contact>
+        <plugin name="footR_bumper_plugin" filename="libgazebo_ros_bumper.so">
+          <robotNamespace>/oslsim</robotNamespace>
+          <bumperTopicName>footR/loadcell</bumperTopicName>
+          <frameName>footR_loadcell_link</frameName>
+        </plugin>
+      </sensor>
+  </gazebo>
+
+</robot>
